@@ -1,0 +1,2 @@
+# codeShell-vllm-
+原始的vllm推理框架中并没有集成codeshell的相关模型，故写codeShell的模型框架使得能够在vllm推理框架下使用
