@@ -1,16 +1,22 @@
-# vLLM适配CodeShell模型
-## 背景
-- ***现状*** vllm（0.5.1）未原生支持CodeShell架构
-- ***目标***
-- 实现CodeShell-7B/14B的高效推理
-- 支持连续批处理和PagedAttention内存管理
-- ***参考网址***
-https://docs.vllm.ai/en/latest/models/adding_model.html
+# vLLM 适配 CodeShell 模型技术文档
 
+## 背景说明
+### 适配需求
+- **当前版本**：vLLM 0.5.1
+- **核心问题**：
+  - 原生不支持CodeShell的Rotary位置编码
+  - 未适配GQA(Grouped Query Attention)机制
+- **参考文档**：
+  [vLLM模型添加指南](https://docs.vllm.ai/en/latest/models/adding_model.html)
 
-## 配置
-在vllm/model_executor/models/__init__.py 添加配置
-```bash
-'CodeShellForCausalLM':('CodeShell','CodeShellForCausalLM')
-```
-并将模型文件CodeShell.py加入vllm/model_executor/models/目录下
+## 配置实现
+### 1. 模型注册
+```python
+# vllm/model_executor/models/__init__.py
+'CodeShellForCausalLM': ('codeshell_model', 'CodeShellForCausalLM')
+
+## 模型文件结构
+vllm/model_executor/models/
+├── __init__.py
+├── codeshell_model.py  # 新增文件
+└── ...其他模型文件
