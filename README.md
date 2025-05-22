@@ -1,4 +1,4 @@
-# vLLM 适配 CodeShell 模型技术文档
+# vLLM 适配 CodeShell 模型
 
 ## 背景说明
 ### 适配需求
