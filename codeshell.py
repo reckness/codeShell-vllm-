@@ -96,7 +96,6 @@ class CodeShellAttention(nn.Module):
         kv_cache: torch.Tensor,
         attn_metadata: AttentionMetadata,
     ) -> torch.Tensor:
-        # print('000000000000000000000000',hidden_states.shape)
         bsz = 1
         q_len, _ = hidden_states.size()
         qkv,_= self.c_attn(hidden_states)
@@ -110,17 +109,12 @@ class CodeShellAttention(nn.Module):
         # value_states = value_states.view(bsz, q_len, 8, self.head_dim).transpose(1, 2)
         # query_states = query_states.reshape(bsz, -1)
         # key_states = key_states.reshape(bsz, -1)
-        #print('111111111111111111111',query_states.shape)
-        #print('22222222222332',value_states.shape)
-        #print('22222222222332111111111111115',key_states.shape)
         query_states, key_states = self.rotary_emb(positions, query_states, key_states)
         query_states = query_states.contiguous()
         key_states = key_states.contiguous()
         value_states =  value_states.contiguous()
         attn_output = self.attn(query_states, key_states, value_states, kv_cache, attn_metadata)
-        #print('66666666666666666666',attn_output.shape)
         attn_output = self.attn_dropout(attn_output)
-        #print('555555555555555555555555555555',attn_output.shape)
         output,_ = self.c_proj(attn_output)
         output = self.resid_dropout(output)
         return output
@@ -150,11 +144,8 @@ class CodeShellMLP(nn.Module):
         self.act_fn = ACT2FN['gelu_pytorch_tanh']
         self.dropout = nn.Dropout(0.1)
     def forward(self,x):
-       # print('000000000000000',x.shape)
         x, _ = self.c_fc(x)
-        # print('11111111111111',x.shape)
         x = self.act_fn(x)
-        # print('22222222222222',x.shape)
         x, _ = self.c_proj(x)
         x= self.dropout(x)
         return x
