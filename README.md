@@ -18,5 +18,5 @@
 ## 模型文件结构
 vllm/model_executor/models/
 ├── __init__.py
-├── codeshell_model.py  # 新增文件
+├── codeshell.py  # 新增文件
 └── ...其他模型文件
